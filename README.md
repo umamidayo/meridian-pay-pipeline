@@ -35,9 +35,24 @@ On every push/PR to `main`:
 
 ### Verifying a signed image
 
+`<sha>` must be the **full** 40-character commit SHA (that's the tag the
+pipeline pushes) — `git rev-parse HEAD`, not the short SHA shown in the
+Actions UI.
+
+Bash/macOS/Linux:
+
 ```bash
 cosign verify \
   --certificate-identity-regexp "https://github.com/<owner>/<repo>/.github/workflows/ci-cd.yml@.*" \
   --certificate-oidc-issuer https://token.actions.githubusercontent.com \
+  ghcr.io/<owner>/<repo>:<sha>
+```
+
+PowerShell:
+
+```powershell
+cosign verify `
+  --certificate-identity-regexp "https://github.com/<owner>/<repo>/.github/workflows/ci-cd.yml@.*" `
+  --certificate-oidc-issuer https://token.actions.githubusercontent.com `
   ghcr.io/<owner>/<repo>:<sha>
 ```
